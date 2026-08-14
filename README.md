@@ -28,7 +28,7 @@ Smoke-tested against `https://opencode.ai/zen/v1/chat/completions`:
 ## Install
 
 ```powershell
-dsh plugin --profile web add "https://github.com/<your-name>/dsh-zen-proxy"
+dsh plugin --profile web add "https://github.com/Yee-h/dsh-zen-proxy.git"
 ```
 
 Or from a local checkout:

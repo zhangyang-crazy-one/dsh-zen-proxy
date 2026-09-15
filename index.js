@@ -88,14 +88,16 @@ export function apply(ctx, config) {
   function forward(req, res, { method, path, body }) {
     const headers = {
       "content-type": "application/json",
-      // Pass through the caller's Authorization if present; nothing else.
-      ...(req.headers.authorization ? { authorization: req.headers.authorization } : {}),
       "user-agent": config.userAgent,
       "x-opencode-client": config.clientHeader,
       "x-opencode-project": config.projectHeader,
       "x-opencode-session": rnd("ses_"),
       "x-opencode-request": rnd("msg_"),
     };
+    // Pass through the caller's Authorization if present; nothing else.
+    if (req.headers.authorization !== undefined) {
+      headers.authorization = req.headers.authorization;
+    }
     if (body !== null) {
       headers["content-length"] = Buffer.byteLength(body);
     }

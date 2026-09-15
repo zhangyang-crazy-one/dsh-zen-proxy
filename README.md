@@ -31,10 +31,29 @@ Smoke-tested against `https://opencode.ai/zen/v1/chat/completions`:
 dsh plugin --profile web add "https://github.com/Yee-h/dsh-zen-proxy.git"
 ```
 
+
 Or from a local checkout:
 
 ```powershell
 dsh plugin --profile web add "file:C:/path/to/dsh-zen-proxy"
+```
+
+### TUI (dsh-tui)
+
+The plugin uses only `ctx.effect` and `ctx.logger` with no service
+injections, so it mounts unchanged in terminal compositions. [`dsh-tui`](https://github.com/zhangyang-crazy-one/dsh-tui)
+bundles this file as `dist/zen-proxy.js` and mounts it in its shipped
+`cordis.patch.yml`; point the `opencode` provider at the proxy like below
+and it works in the TUI with no extra setup.
+
+```yaml
+# dsh-tui cordis.patch.yml
+- insert:
+    - id: zen-proxy
+      name: "./dist/zen-proxy.js"
+      config:
+        host: 127.0.0.1
+        port: 4097
 ```
 
 ## Configure

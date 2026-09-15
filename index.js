@@ -96,7 +96,9 @@ export function apply(ctx, config) {
       "x-opencode-session": rnd("ses_"),
       "x-opencode-request": rnd("msg_"),
     };
-    if (body !== null) headers["content-length"] = Buffer.byteLength(body);
+    if (body !== null) {
+      headers["content-length"] = Buffer.byteLength(body);
+    }
 
     const out = https.request(
       {

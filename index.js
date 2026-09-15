@@ -116,7 +116,7 @@ export function apply(ctx, config) {
       res.writeHead(502);
       res.end(String(e));
     });
-    if (body !== null) out.end(body);
-    else out.end();
+    if (body === null) out.end();
+    else out.end(body);
   }
 }

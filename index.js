@@ -63,7 +63,7 @@ export function apply(ctx, config) {
     }
 
     let body = "";
-    req.on("data", (c) => (body += c));
+    req.on("data", (c) => { body += c; });
     req.on("end", () => {
       forward(req, res, { method: "POST", path: `${config.upstreamBasePath}/chat/completions`, body });
     });
@@ -116,7 +116,10 @@ export function apply(ctx, config) {
       res.writeHead(502);
       res.end(String(e));
     });
-    if (body === null) out.end();
-    else out.end(body);
+    if (body === null) {
+      out.end();
+    } else {
+      out.end(body);
+    }
   }
 }

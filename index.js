@@ -56,7 +56,11 @@ export function apply(ctx, config) {
       return;
     }
 
-    if (method !== "POST" || url !== "/v1/chat/completions") {
+    // muse-spark (and other responses-only models) are served by the Zen
+    // gateway at /v1/responses instead of /v1/chat/completions (oh-my-pi
+    // #8957); forwarding both lets pi-ai's openai-responses protocol work.
+    const forwardablePost = url === "/v1/chat/completions" || url === "/v1/responses";
+    if (method !== "POST" || !forwardablePost) {
       res.writeHead(404, { "content-type": "application/json" });
       res.end(JSON.stringify({ error: { type: "not_found", message: `zen-proxy: unsupported ${method} ${url}` } }));
       return;

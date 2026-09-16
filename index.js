@@ -69,7 +69,12 @@ export function apply(ctx, config) {
     let body = "";
     req.on("data", (c) => { body += c; });
     req.on("end", () => {
-      forward(req, res, { method: "POST", path: `${config.upstreamBasePath}/chat/completions`, body });
+      // Forward each route to its matching upstream path: /v1/responses
+      // hits /zen/v1/responses, /v1/chat/completions hits
+      // /zen/v1/chat/completions. Forwarding everything to
+      // chat/completions breaks responses-only models (muse-spark, 500).
+      const upstreamPath = url === "/v1/responses" ? "/responses" : "/chat/completions";
+      forward(req, res, { method: "POST", path: `${config.upstreamBasePath}${upstreamPath}`, body });
     });
   });
 
